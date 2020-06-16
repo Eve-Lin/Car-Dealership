@@ -1,5 +1,5 @@
 package com.evelin.cars.model;
 
 public enum Engine {
-DIESEL, GASOLINE
+DIESEL, GASOLINE, ELECTRIC, HYBRID
 }

@@ -1,51 +1,43 @@
 package com.evelin.cars.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "brands")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Brand {
-
-    private Long id;
-    private String name;
-    private LocalDateTime created;
-    private LocalDateTime modified;
-
-    public Brand(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
-        return id;
+    @EqualsAndHashCode.Include
+    private Long id;
+    @NonNull
+    private String name;
+    private LocalDateTime created;
+    private LocalDateTime modified;
+    @OneToMany(mappedBy = "brand", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Model> models = new ArrayList<>();
+
+    public static Brand create(String name, Set<Model> models) {
+        Brand brand = new Brand(name);
+        models.stream().forEach(model -> {
+            model.setBrand(brand);
+            brand.getModels().add(model);
+        });
+        return brand;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    ;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getModified() {
-        return modified;
-    }
-
-    public void setModified(LocalDateTime modified) {
-        this.modified = modified;
-    }
 }

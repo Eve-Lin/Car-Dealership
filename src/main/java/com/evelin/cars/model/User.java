@@ -1,98 +1,80 @@
 package com.evelin.cars.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
-    private Long id;
-    private String username;
-    private String firstName;
-    private String lastName;
-    private Boolean active;
-    private UserRole role;
-    private String imageUrl;
-    private LocalDateTime created;
-    private LocalDateTime modified;
-
-public User(){}
+@Data
+@NoArgsConstructor
+@AllArgsConstructor@RequiredArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class User implements UserDetails {
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
-        return id;
+    @EqualsAndHashCode.Include
+    private Long id;
+    @NonNull
+    @EqualsAndHashCode.Include
+    @Column(unique = true, nullable = false)
+    private String username;
+    @NonNull
+    private String firstName;
+    @NonNull
+    private String lastName;
+    private Boolean active = true;
+    private String imageUrl;
+    private LocalDateTime created;
+    private LocalDateTime modified;
+    @NonNull
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<Role> roles;
+    @OneToMany(mappedBy = "seller")
+    @ToString.Exclude
+    @JsonIgnore
+    private Collection<Offer> offers = new ArrayList<>();
+
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
+    @Override
+    public String getPassword() {
+        return null;
     }
 
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getModified() {
-        return modified;
-    }
-
-    public void setModified(LocalDateTime modified) {
-        this.modified = modified;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Boolean getActive() {
+    @Override
+    public boolean isAccountNonExpired() {
         return active;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    @Override
+    public boolean isAccountNonLocked() {
+        return active;
     }
 
-    @ManyToOne
-    public UserRole getRole() {
-        return role;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return active;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    @Override
+    public boolean isEnabled() {
+        return active;
     }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-
 }
