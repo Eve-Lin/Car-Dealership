@@ -17,7 +17,12 @@ body {
      width: 80%;
      padding: 20px;
      text-align: center;
+
 }
 .brand-section{
      background: #383d41;
+margin: 10px;
+}
+td, th {
+     padding: 3px 8px;
 }

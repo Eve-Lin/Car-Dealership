@@ -13,7 +13,7 @@
         <hr style="width: 50%"/>
         <div class='row mb-4 d-flex justify-content-around'>
             <th:block th:each="o : ${brands}">
-                <div class="brand-section col-md-4 d-flex flex-column bg-text mb-3">
+                <div class="brand-section col-md-5 d-flex flex-column  bg-text mb1">
                     <h2 th:text = "|Car brand: ${o.name}|"></h2>
                     <div>Models:
                     <table>
@@ -25,11 +25,11 @@
                             <th>Picture:</th>
                         </tr>
                         <tr th:each="model : ${o.models}">
-                            <th th:text = "|Name: ${model.name}|"></th>
-                            <th th:text = "|Category: ${model.category}|">Category:</th>
-                            <th th:text = "|Start Year: ${model.startYear}|"></th>
-                            <th th:text = "|End Year ${model.endYear}|">End Year:</th>
-                            <th><img th:src = "${model.imageUrl}" class="img-thumbnail">Picture:</th>
+                            <th th:text = "${model.name}|"></th>
+                            <th th:text = "${model.category}|"></th>
+                            <th th:text = "${model.startYear}|"></th>
+                            <th th:text = "${model.endYear}|"></th>
+                            <th><img th:src = "${model.imageUrl}" class="img-thumbnail"></th>
 <!--                        <span th:text="${model.getName()}" />-->
                         </tr>
                     </table>
