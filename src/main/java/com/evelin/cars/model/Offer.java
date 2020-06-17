@@ -29,8 +29,8 @@ public class Offer {
     private Double price;
     private Transmission transmission;
     private Integer year;
-    private LocalDateTime created;
-    private LocalDateTime modified;
+    private Date created = new Date();
+    private Date modified = new Date();
     @ManyToOne
     @NonNull
     private Model model;

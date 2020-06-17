@@ -3,14 +3,12 @@ package com.evelin.cars.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "brands")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,9 +21,10 @@ public class Brand {
     @EqualsAndHashCode.Include
     private Long id;
     @NonNull
+
     private String name;
-    private LocalDateTime created;
-    private LocalDateTime modified;
+    private Date created = new Date();
+    private Date modified = new Date();
     @OneToMany(mappedBy = "brand", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Model> models = new ArrayList<>();
 

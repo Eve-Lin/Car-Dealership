@@ -1,12 +1,8 @@
 package com.evelin.cars.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -19,13 +15,26 @@ public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NonNull
     private String name;
-    private String imageUrl;
+    @NonNull
+    private VehicleCategory category;
+    @NonNull
     private Integer startYear;
     private Integer endYear;
-    private LocalDateTime created;
-    private LocalDateTime modified;
+    private Date created = new Date() ;
+    private Date modified = new Date();
     @ManyToOne
+    @ToString.Exclude
     private Brand brand;
+    @NonNull
+    private String imageUrl;
 
+    public Model(String name, VehicleCategory category, Integer startYear, Integer endYear, String imageUrl) {
+        this.name = name;
+        this.category = category;
+        this.startYear = startYear;
+        this.imageUrl = imageUrl;
+        this.endYear = endYear;
+    }
 }
