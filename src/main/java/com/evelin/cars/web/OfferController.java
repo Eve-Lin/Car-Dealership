@@ -1,6 +1,8 @@
 package com.evelin.cars.web;
 
+import com.evelin.cars.service.BrandService;
 import com.evelin.cars.service.OfferService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/offers")
 public class OfferController {
 
-    private final OfferService offerService;
+    private OfferService offerService;
+    private BrandService brandService;
 
-    public OfferController(OfferService offerService) {
+    @Autowired
+    public OfferController(OfferService offerService, BrandService brandService) {
         this.offerService = offerService;
+        this.brandService = brandService;
     }
 
     @GetMapping("/all")
