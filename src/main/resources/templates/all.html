@@ -1,49 +1,36 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>West Compass</title>
-    <link rel="stylesheet" href="/css/reset-css.css"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/style.css"/>
+   <th:block th:include="~{/fragments/head}"></th:block>
 </head>
 <body>
 <main>
     <nav class="navbar navbar-expand-lg navbar-background">
-        <a class="nav-link text-white active h5" href="/">Home</a>
-        <div class="collapse navbar-collapse d-flex justify-content-end">
-            <ul class="navbar-nav row">
-                <li class="nav-item col-md-4">
-                    <a class="nav-link text-white active font-weight-bold" href="/create">Upload Car</a>
-                </li>
-                <li class="nav-item col-md-4">
-                    <a class="nav-link text-white active font-weight-bold" href="/all">All Cars</a>
-                </li>
-            </ul>
-        </div>
+        <th:block th:include="~{/fragments/nav}"></th:block>
     </nav>
     <div class="container">
-        <h2 class="text-center text-white mt-5">West Compass Offers</h2>
+        <h2 class="text-center text-white mt-5"> Drivinci Offers</h2>
         <hr style="width: 50%"/>
         <div class='row mb-4 d-flex justify-content-around'>
-            
-                <div class="col-md-4 d-flex flex-column bg-text mb-3">
-                    <h2>Car brand: ...</h2>
-                    <h4>Model: ....</h4>
-                    <h4>Year: ...</h4>
-                    <h4>Engine: ...</h4>
-                    <h4><a class="btn-block" href="/cars/id">Details</a></h4>
-                </div>
-				
-				 <div class="col-md-4 d-flex flex-column bg-text mb-3">
-                    <h2>Car brand: ...</h2>
-                    <h4>Model: ....</h4>
-                    <h4>Year: ...</h4>
-                    <h4>Engine: ...</h4>
-                    <h4><a class="btn-block" href="/cars/id">Details</a></h4>
-                </div>
-           
+ <th:block th:each="o : ${offers}">
+            <div class="col-md-4 d-flex flex-column bg-text mb-3">
+                <h2 th:text = "|Car brand: ${o.model.brand.name}|"></h2>
+                <h4 th:text = "|Car brand: ${o.model.name}|">Model: ....</h4>
+               <h4 th:text = "|Car brand: ${o.year}|"></h4>
+               <h4 th:text = "|Car brand: ${o.engine.name()}|">Engine: ...</h4>
+                <h4><a class="btn-block" href="/cars/id">Details</a></h4>
+            </div>
+ </th:block>
+			
+			<div class="col-md-4 d-flex flex-column bg-text mb-3">
+                <h2>Car brand: ...</h2>
+                <h4>Model: ....</h4>
+               <h4>Year: ...</h4>
+               <h4>Engine: ...</h4>
+                <h4><a class="btn-block" href="/cars/id">Details</a></h4>
+            </div>
+
+        </div>
     </div>
 </main>
 </body>
