@@ -121,12 +121,16 @@ public class DataInit implements CommandLineRunner {
     );
     @Override
     public void run(String... args) throws Exception {
-        SAMPLE_USERS.forEach(user -> userService.createUser(user));
+        if(userService.getUsersCount() == 0) {
+            SAMPLE_USERS.forEach(user -> userService.createUser(user));
+        }
         log.info("Created Users: {}", userService.getUsers());
-        SAMPLE_BRANDS.forEach((brand, models) -> {
-            Brand newBrand = Brand.create(brand, models);
-            brandService.createBrand(newBrand);
-        });
+        if (brandService.getBrandsCount() == 0) {
+            SAMPLE_BRANDS.forEach((brand, models) -> {
+                Brand newBrand = Brand.create(brand, models);
+                brandService.createBrand(newBrand);
+            });
+        }
         log.info("Created Brands: {}", brandService.getBrands());
     }
 }

@@ -1,4 +1,4 @@
-package com.evelin.cars.controller;
+package com.evelin.cars.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
