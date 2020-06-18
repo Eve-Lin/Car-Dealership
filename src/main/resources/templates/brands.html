@@ -25,10 +25,11 @@
                             <th>Picture:</th>
                         </tr>
                         <tr th:each="model : ${o.models}">
-                            <th th:text = "${model.name}|"></th>
-                            <th th:text = "${model.category}|"></th>
-                            <th th:text = "${model.startYear}|"></th>
-                            <th th:text = "${model.endYear}|"></th>
+<!--                            <th th:text = "${modelStat.index +1}"></th>-->
+                            <th th:text = "${model.name}"></th>
+                            <th th:text = "${model.category}"></th>
+                            <th th:text = "${model.startYear}"></th>
+                            <th th:text = "${model.endYear}"></th>
                             <th><img th:src = "${model.imageUrl}" class="img-thumbnail"></th>
 <!--                        <span th:text="${model.getName()}" />-->
                         </tr>

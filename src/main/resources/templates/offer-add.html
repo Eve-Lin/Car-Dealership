@@ -11,39 +11,20 @@
 
     <div class="container-fluid">
         <h2 class="text-center text-white">Upload Offer</h2>
-        <form class="mx-auto w-15" th:action="/offers" method="POST">
-            <div class="col col-md-12">
-                <div class="form-group ">
-                    <div class="label-holder d-flex justify-content-center">
-                        <label class="text-center text-white font-weight-bold" for="model">Select model
-                            <select id="model" name="model" class="form-control">
-                                <option value="">C class</option>
-								<option value="">3 Series</option>
-								<option value="">Celica</option>                               
-                            </select>
-                        </label>
-                    </div>
-                </div>
-            </div>
+        <form th:object="${offer}" class="mx-auto w-15" th:action="@{/offers/add}" method="POST">
+
             <div class="row">
                 <div class="col col-md-3"></div>
-                <div class="col col-md-3">
-                    <div class="form-group">
-                        <div class="label-holder d-flex justify-content-center">
-                            <label class="text-center text-white font-weight-bold" for="year">Year
-                                <input type="number" class="form-control" placeholder="Year" name="year" id="year">
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-md-3">
+                <div class="col col-md-6">
                     <div class="form-group ">
                         <div class="label-holder d-flex justify-content-center">
-                            <label class="text-center text-white font-weight-bold" for="engine">Engine
-                                <select id="engine" name="engine" class="form-control">
-                                    <option value="Diesel">Diesel</option>
-                                    <option value="Gasoline">Gasoline</option>
-                                    <option value="Electric">Electric</option>
+                            <label class="text-center text-white font-weight-bold" for="category">Category
+                                <select th:field="*{category}" id="category" name="category" class="form-control">
+                                    <option th:each="cat : ${T(com.evelin.cars.model.VehicleCategory).values()}"
+                                            th:value="${cat}"
+                                            th:text="${cat}" th:selected="${offer.category == cat}">
+                                        Vehicle Category
+                                    </option>
                                 </select>
                             </label>
                         </div>
@@ -52,7 +33,56 @@
             </div>
             <div class="row">
                 <div class="col col-md-3"></div>
-                <div class="col col-md-3">
+                <div class="col col-md-6">
+                    <div class="form-group ">
+                        <label class="text-center text-white font-weight-bold" for="model">Model</label>
+                        <select th:field="*{model.id}" id="model" class="form-control">
+                            <option value="">- Select a model -</option>
+                            <optgroup th:each="brand : ${brands}" th:label="|-- ${brand.name} --|">
+                                <option th:each="brand_model : ${brand.models}" th:value="${brand_model.id}"
+                                        th:text="|   ${brand.name} ${brand_model.name}|"
+                                        th:selected="${offer.model != null && brand_model.id == offer.model.id}">
+                                    Model
+                                </option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-3"></div>
+                <div class="col col-md-6">
+                    <div class="form-group">
+                        <div class="label-holder d-flex justify-content-center">
+                            <label class="text-center text-white font-weight-bold" for="year">Year
+                                <input type="number" class="form-control" placeholder="Year" name="year" id="year"
+                                       th:value="*{year}">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-3"></div>
+                <div class="col col-md-6">
+                    <div class="form-group ">
+                        <div class="label-holder d-flex justify-content-center">
+                            <label class="text-center text-white font-weight-bold" for="engine">Engine
+                                <select th:field="*{engine}"id="engine" name="engine" class="form-control">
+                                    <option th:each="eng_type : ${T(com.evelin.cars.model.Engine).values()}" th:value="${eng_type}"  th:text="${eng_type}" th:selected="${offer.engine == eng_type}">
+                                        Engine type
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-3"></div>
+                <div class="col col-md-6">
                     <div class="form-group">
                         <div class="label-holder d-flex justify-content-center">
                             <label class="text-center text-white font-weight-bold" for="year">Mileage
@@ -62,17 +92,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-md-3">
-                    <div class="form-group ">
+            </div>
+
+            <div class="row">
+                <div class="col col-md-3"></div>
+                <div class="col col-md-6">
+                    <div class="form-group">
                         <div class="label-holder d-flex justify-content-center">
-                            <label class="text-center text-white font-weight-bold" for="engine">Category
-                                <select id="category" name="category" class="form-control">
-                                    <option value="cabrio">Cabrio</option>
-                                    <option value="sedan">Sedan</option>
-                                    <option value="hatchback">Hatchback</option>
-                                    <option value="buss">Buss</option>
-                                    <option value="truck">Truck</option>
-                                </select>
+                            <label class="text-center text-white font-weight-bold" for="price">Price
+                                <input type="number" th:value="*{price}" class="form-control"
+                                       placeholder="Price"
+                                       name="price" id="price">
                             </label>
                         </div>
                     </div>
@@ -80,16 +110,7 @@
             </div>
             <div class="row">
                 <div class="col col-md-3"></div>
-                <div class="col col-md-3">
-                    <div class="form-group">
-                        <div class="label-holder d-flex justify-content-center">
-                            <label class="text-center text-white font-weight-bold" for="price">Price
-                                <input type="number" class="form-control" placeholder="Price" name="price" id="price">
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-md-3">
+                <div class="col col-md-6">
                     <div class="form-group ">
                         <div class="label-holder d-flex justify-content-center">
                             <label class="text-center text-white font-weight-bold" for="transmission">Transmission
@@ -103,9 +124,10 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col col-md-3"></div>
-                <div class="col col-md-3">
+                <div class="col col-md-6">
                     <div class="form-group">
                         <div class="label-holder d-flex justify-content-center">
                             <label class="text-center text-white font-weight-bold" for="imageUrl">Picture Url
@@ -115,27 +137,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-md-3">
-                    <div class="form-group ">
-                        <div class="label-holder d-flex justify-content-center">
-                            <label class="text-center text-white font-weight-bold" for="username">Seller username
-                                <select id="username" name="username" class="form-control">
-                                    <option value="">Select username</option>
-									<option value="">Pesho</option>
-									<option value="">Gosho</option>
-                                    
-                                </select>
-                            </label>
-                        </div>
-                    </div>
-                </div>
             </div>
+
             <div class="row">
                 <div class="col">
                     <div class="form-group">
                         <div class="label-holder d-flex justify-content-center">
                             <label class="text-center text-white font-weight-bold" for="description">Description
-                                <textarea type="textarea" class="form-control" name="description"
+                                <textarea th:value="*{description}" type="textarea" class="form-control"
+                                          name="description"
                                           id="description" rows="3"
                                           placeholder="Description"></textarea>
                             </label>

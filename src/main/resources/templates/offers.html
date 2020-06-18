@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<main>
+    <nav class="navbar navbar-expand-lg navbar-background">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+    </nav>
+    <div class="container">
+        <h2 class="text-center text-white mt-5"> Drivinci Offers</h2>
+        <hr style="width: 50%"/>
+        <div class='row mb-4 d-flex justify-content-around'>
+            <div th:each="o : ${offers}" class="col-md-4 d-flex flex-column bg-text mb-3">
+<!--                <h2 th:text="|Car brand: ${o.model.brand}|"></h2>-->
+                <h4 th:text="|Car brand: ${o.model.name}|">Model: ....</h4>
+                <h4 th:text="|Car brand: ${o.year}|"></h4>
+                <h4 th:text="|Car brand: ${o.engine}|">Engine: ...</h4>
+                <h4><a class="btn-block" href="/cars/id">Details</a></h4>
+
+            </div>
+
+        </div>
+    </div>
+</main>
+</body>
+</html>

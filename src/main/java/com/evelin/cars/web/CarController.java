@@ -12,6 +12,6 @@ public class CarController {
 
     @GetMapping("/all")
     public String getAllCars(){
-        return "all";
+        return "offers";
     }
 }

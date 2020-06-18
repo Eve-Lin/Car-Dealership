@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -12,27 +11,29 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-    @NonNull
+//    @NonNull
     private String description;
-    @NonNull
+//    @NonNull
     private Engine engine;
-    @NonNull
+//    @NonNull
     private String imageUrl;
     private Integer mileage;
     private Double price;
     private Transmission transmission;
+//    @NonNull
+    private VehicleCategory category;
     private Integer year;
     private Date created = new Date();
     private Date modified = new Date();
     @ManyToOne
-    @NonNull
+//    @NonNull
     private Model model;
     @ManyToOne(optional = true)
     @ToString.Exclude
