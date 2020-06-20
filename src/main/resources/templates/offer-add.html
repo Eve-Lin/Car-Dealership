@@ -5,13 +5,14 @@
 </head>
 <body>
 <main class="main">
-    <nav class="navbar navbar-expand-lg navbar-background">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
         <th:block th:include="~{/fragments/nav}"></th:block>
     </nav>
 
     <div class="container">
         <h2 class="text-center text-white">Upload Offer</h2>
-        <form th:object="${offer}" class="mx-auto w-15" th:action="@{/offers/add}" method="POST">
+        <form th:object="${offer}" class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"
+              th:action="@{/offers/add}" method="POST">
 
             <div class="row">
                 <div class="col col-md-3"></div>
@@ -35,17 +36,20 @@
                 <div class="col col-md-3"></div>
                 <div class="col col-md-6">
                     <div class="form-group ">
-                        <label class="text-center text-white font-weight-bold" for="model">Model</label>
-                        <select th:field="*{model.id}" id="model" class="form-control">
-                            <option value="">- Select a model -</option>
-                            <optgroup th:each="brand : ${brands}" th:label="|-- ${brand.name} --|">
-                                <option th:each="brand_model : ${brand.models}" th:value="${brand_model.id}"
-                                        th:text="|   ${brand.name} ${brand_model.name}|"
-                                        th:selected="${offer.model != null && brand_model.id == offer.model.id}">
-                                    Model
-                                </option>
-                            </optgroup>
-                        </select>
+                        <div class="label-holder d-flex justify-content-center">
+                            <label class="text-center text-white font-weight-bold" for="model">Model
+                                <select th:field="*{model.id}" id="model" class="form-control">
+                                    <option value="">- Select a model -</option>
+                                    <optgroup th:each="brand : ${brands}" th:label="|-- ${brand.name} --|">
+                                        <option th:each="brand_model : ${brand.models}" th:value="${brand_model.id}"
+                                                th:text="|   ${brand.name} ${brand_model.name}|"
+                                                th:selected="${offer.model != null && brand_model.id == offer.model.id}">
+                                            Model
+                                        </option>
+                                    </optgroup>
+                                </select>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -69,8 +73,10 @@
                     <div class="form-group ">
                         <div class="label-holder d-flex justify-content-center">
                             <label class="text-center text-white font-weight-bold" for="engine">Engine
-                                <select th:field="*{engine}"id="engine" name="engine" class="form-control">
-                                    <option th:each="eng_type : ${T(com.evelin.cars.model.Engine).values()}" th:value="${eng_type}"  th:text="${eng_type}" th:selected="${offer.engine == eng_type}">
+                                <select th:field="*{engine}" id="engine" name="engine" class="form-control">
+                                    <option th:each="eng_type : ${T(com.evelin.cars.model.Engine).values()}"
+                                            th:value="${eng_type}" th:text="${eng_type}"
+                                            th:selected="${offer.engine == eng_type}">
                                         Engine type
                                     </option>
                                 </select>

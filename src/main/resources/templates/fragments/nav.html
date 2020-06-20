@@ -40,7 +40,7 @@
                 <a class="nav-link" th:href="@{/auth/register}">Register</a>
             </li>
             <li th:unless="${session.user}" class="nav-item" th:classappend="${#request.getServletPath() == '/auth/login'}? 'active'">
-                <a class="nav-link" th:href="@{auth/login}">Login</a>
+                <a class="nav-link" th:href="@{/auth/login}">Login</a>
             </li>
         </ul>
     </div>
