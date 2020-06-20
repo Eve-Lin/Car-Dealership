@@ -3,17 +3,14 @@ package com.evelin.cars.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -45,7 +42,7 @@ public class User implements UserDetails{
     private String password;
     @NonNull
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
     private Boolean active = true;
     private String imageUrl;
     private Date created;
@@ -56,6 +53,31 @@ public class User implements UserDetails{
     @JsonIgnore
     private Collection<Offer> offers = new ArrayList<>();
 
+    public User( String firstName, String lastName,
+               @NotNull String username,
+                @NotNull String password,
+              Set<Role> roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.imageUrl = "/img/user-avatar.svg";
+    }
+
+    public User(String firstName,
+                 String lastName,
+                @NotNull String username,
+                 @NotNull String password,
+                Set<Role> roles,
+              String imageUrl) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.imageUrl = imageUrl;
+    }
 
 
     @Override

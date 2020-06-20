@@ -1,6 +1,9 @@
 package com.evelin.cars.init;
 
-import com.evelin.cars.model.*;
+import com.evelin.cars.model.Brand;
+import com.evelin.cars.model.Model;
+import com.evelin.cars.model.Role;
+import com.evelin.cars.model.User;
 import com.evelin.cars.service.BrandService;
 import com.evelin.cars.service.OfferService;
 import com.evelin.cars.service.UserService;
