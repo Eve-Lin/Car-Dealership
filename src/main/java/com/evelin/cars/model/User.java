@@ -2,7 +2,6 @@ package com.evelin.cars.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,7 +37,7 @@ public class User implements UserDetails{
     @Column(unique = true, nullable = false)
     private String username;
     @NonNull
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @NonNull
     @ElementCollection(fetch = FetchType.EAGER)

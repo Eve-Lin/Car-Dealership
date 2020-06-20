@@ -49,7 +49,7 @@ public class AuthController {
     @GetMapping("/login")
     public String getLoginForm(Model model) {
         if(model.getAttribute("username") == null){
-            model.addAttribute("usernmae","");
+            model.addAttribute("username","");
         }
         if(model.getAttribute("password") == null){
             model.addAttribute("password","");
@@ -79,5 +79,12 @@ public class AuthController {
             }
         }
     }
+
+
+  @RequestMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+  }
 
 }
