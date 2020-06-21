@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/auth")
@@ -31,28 +32,35 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerNewUser(@ModelAttribute("user") User user, BindingResult result) {
+    public String registerNewUser(@Valid @ModelAttribute("user") User user,
+                                  final BindingResult result,
+                                  RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
-            log.error("Error registering user: ", result.getAllErrors());
-            return "auth-register";
-        }
-        try {
-            User registeredUser = authService.register(user);
-            return "redirect:login";
-        } catch (Exception ex) {
-            log.error("Error registering user", ex);
-            return "auth-result";
+            log.error("Errors in user: ", result.getAllErrors());
+            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("errors", result);
+            return "redirect:register";
+        }else {
+            try {
+                User registeredUser = authService.register(user);
+                return "redirect:login";
+            } catch (Exception ex) {
+                log.error("Error registering user", ex);
+                redirectAttributes.addFlashAttribute("user", user);
+                redirectAttributes.addFlashAttribute("errors", result);
+                return "redirect:register";
+            }
         }
     }
 
     @GetMapping("/login")
     public String getLoginForm(Model model) {
-        if(model.getAttribute("username") == null){
-            model.addAttribute("username","");
+        if (model.getAttribute("username") == null) {
+            model.addAttribute("username", "");
         }
-        if(model.getAttribute("password") == null){
-            model.addAttribute("password","");
+        if (model.getAttribute("password") == null) {
+            model.addAttribute("password", "");
         }
         return "auth-login";
     }
@@ -62,29 +70,38 @@ public class AuthController {
                             @RequestParam("password") String password,
                             @ModelAttribute("redirectUrl") String redirectUrl,
                             RedirectAttributes redirectAttributes,
-                            HttpSession session) {
+                            HttpSession session,
+                            BindingResult bindingResult) {
 
-        User loggedUser = authService.login(username, password);
-        if(loggedUser == null){
+        if (bindingResult.hasErrors()) {
             String errors = "Invalid username or password.";
             redirectAttributes.addFlashAttribute("username", username);
-            redirectAttributes.addFlashAttribute("error", errors);
+            redirectAttributes.addFlashAttribute("errors", errors);
             return "redirect:login";
-        }else{
-            session.setAttribute("user", loggedUser);
-            if(redirectUrl != null && redirectUrl.trim().length() > 0){
-                return "redirect:"+ redirectUrl;
-            }else{
-                return "redirect:" + redirectUrl;
+        } else {
+
+            User loggedUser = authService.login(username, password);
+            if (loggedUser == null) {
+                String errors = "Invalid username or password.";
+                redirectAttributes.addFlashAttribute("username", username);
+                redirectAttributes.addFlashAttribute("errors", errors);
+                return "redirect:login";
+            } else {
+                session.setAttribute("user", loggedUser);
+                if (redirectUrl != null && redirectUrl.trim().length() > 0) {
+                    return "redirect:" + redirectUrl;
+                } else {
+                    return "redirect:/";
+                }
             }
         }
     }
 
 
-  @RequestMapping("/logout")
-    public String logout(HttpSession session){
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
-  }
+    }
 
 }

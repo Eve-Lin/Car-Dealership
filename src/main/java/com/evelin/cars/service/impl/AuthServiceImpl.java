@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User login(String username, String password) {
         User user = userService.getUserByUsername(username);
-        if(user.getPassword().equals(password)){    //please, do not use this in prod
+        if(user.getPassword() !=null && user.getPassword().equals(password)){    //please, do not use this in prod
             return user;
         }
         return null;

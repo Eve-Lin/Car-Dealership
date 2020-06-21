@@ -5,8 +5,6 @@ import com.evelin.cars.model.User;
 import com.evelin.cars.repository.UserRepository;
 import com.evelin.cars.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -39,8 +37,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() ->
-                new EntityNotFoundException(String.format("User with name %s could not be found",username)));
+        User userNull = new User();
+//        return userRepository.findByUsername(username).orElseThrow(() ->
+//                new EntityNotFoundException(String.format("User with name %s could not be found",username)));
+        return userRepository.findByUsername(username).orElse(userNull);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
         if(user.getRoles() == null || user.getRoles().size() == 0) {
             user.setRoles(Set.of(Role.SELLER));
         }
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        user.setPassword(user.getPassword());
         user.setActive(true);
        return userRepository.save(user);
     }

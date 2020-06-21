@@ -20,7 +20,7 @@
             <div class="form-group col-md-6 mb-3">
                 <label for="firstName" class="text-white font-weight-bold">First Name</label>
                 <input th:field="*{firstName}" id="firstName" type="text" min="2" max="20" class="form-control"
-                        placeholder="First name" th:errorclass="field-error" /> //including errors if there are any
+                        placeholder="First name" th:errorclass="field-error" /> <!--including errors if there are any-->
                 <p th:if="${#fields.hasErrors('firstName')}" class="errors alert alert-danger" th:errors="*{firstName}">
                     First name is required.
                 </p>
@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="text-center text-white font-weight-bold" for="roles">Engine</label>
+            <label class="text-center text-white font-weight-bold" for="roles">Role</label>
             <select th:field="*{roles}"id="roles" class="form-control" multiple th:errorclass="field-error" >
                 <option th:each="role : ${T(com.evelin.cars.model.Role).values()}" th:value="${role}" th:text="${role}"
                 th:selected="${#sets.contains(user.roles, role)}">

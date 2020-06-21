@@ -2,8 +2,10 @@ package com.evelin.cars.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.Date;
 
 @Entity
@@ -18,17 +20,19 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-//    @NonNull
+    //    @NonNull
+    @Length(min = 2, max = 512)
     private String description;
-//    @NonNull
+    //    @NonNull
     private Engine engine;
-//    @NonNull
+    //    @NonNull
     private String imageUrl;
     private Integer mileage;
     private Double price;
     private Transmission transmission;
-//    @NonNull
+    //    @NonNull
     private VehicleCategory category;
+    @Min(1990)
     private Integer year;
     private Date created = new Date();
     private Date modified = new Date();

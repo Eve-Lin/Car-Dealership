@@ -21,7 +21,6 @@ public class Brand {
     @EqualsAndHashCode.Include
     private Long id;
     @NonNull
-
     private String name;
     private Date created = new Date();
     private Date modified = new Date();
