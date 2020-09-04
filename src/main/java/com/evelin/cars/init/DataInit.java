@@ -1,9 +1,6 @@
 package com.evelin.cars.init;
 
-import com.evelin.cars.model.Brand;
-import com.evelin.cars.model.Model;
-import com.evelin.cars.model.Role;
-import com.evelin.cars.model.User;
+import com.evelin.cars.model.*;
 import com.evelin.cars.service.BrandService;
 import com.evelin.cars.service.OfferService;
 import com.evelin.cars.service.UserService;
@@ -16,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.evelin.cars.model.Role.ADMIN;
-import static com.evelin.cars.model.Role.SELLER;
 import static com.evelin.cars.model.VehicleCategory.*;
 
 @Slf4j
@@ -35,7 +30,6 @@ public class DataInit implements CommandLineRunner {
 
             "BMW",
             Set.of(
-                    new Model("M1", CAR, 1978, 1981, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/BMW_M1%2C_front_right_%28Brooklyn%29.jpg/560px-BMW_M1%2C_front_right_%28Brooklyn%29.jpg"),
                     new Model("M2", CAR, 2016, null, "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/2017_BMW_M2_Automatic_3.0_Front.jpg/560px-2017_BMW_M2_Automatic_3.0_Front.jpg"),
                     new Model("M3", CAR, 2008, 2012, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/2018_BMW_M3_3.0.jpg/560px-2018_BMW_M3_3.0.jpg"),
                     new Model("M4", CAR, 2014, null, "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/2015_BMW_M4_%28F82%29_coupe_%2824220553394%29.jpg/560px-2015_BMW_M4_%28F82%29_coupe_%2824220553394%29.jpg"),
@@ -118,16 +112,16 @@ public class DataInit implements CommandLineRunner {
 
 
     private static final List<User> SAMPLE_USERS = List.of(
-            new User("Default", "Admin","admin","admin",Set.of(ADMIN)),
-            new User("Ivan", "Pertov", "ivan", "ivan", Set.of(SELLER)),
-            new User("Dimitar", "Georgiev", "dimitar", "dimitar", Set.of(Role.BUYER))
+            new User("Default", "Admin","admin","admin@admin.com", "password",new Role("ADMIN")),
+            new User("Ivan", "Pertov", "ivan", "user@user.com", "password1", new Role("SELLER")),
+            new User("Dimitar", "Georgiev", "dimitar", "dimitar@admin.com",  "password2",new Role("BUYER"))
     );
     @Override
     public void run(String... args) throws Exception {
         if(userService.getUsersCount() == 0) {
             SAMPLE_USERS.forEach(user -> userService.createUser(user));
         }
-//        log.info("Created Users: {}", userService.getUsers());
+        log.info("Created Users: {}", userService.getUsers());
         if (brandService.getBrandsCount() == 0) {
             SAMPLE_BRANDS.forEach((brand, models) -> {
                 Brand newBrand = Brand.create(brand, models);

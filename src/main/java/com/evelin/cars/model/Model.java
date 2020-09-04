@@ -23,9 +23,9 @@ public class Model {
     @NonNull
     private VehicleCategory category;
     @NonNull
-    @Min(1990)
+    @Min(1890)
     private Integer startYear;
-    @Min(1990)
+    @Min(1890)
     private Integer endYear;
     private Date created = new Date() ;
     private Date modified = new Date();

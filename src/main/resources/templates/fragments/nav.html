@@ -33,16 +33,16 @@
 <!--                    <a class="dropdown-item" href="/">Something else here</a>-->
 <!--                </div>-->
 <!--            </li>-->
-            <li th:if="${session.user}" class="nav-item" th:classappend="${#request.getServletPath() == '/auth/logaout'}? 'active'">
+            <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item" th:classappend="${#request.getServletPath() == '/auth/logaout'}? 'active'">
                 <div class="form-inline my-2 my-lg-0 border px-3">
-                    <div class="logged-user" th:text="|Wellcome, ${session.user.firstName}|"/>
+                    <div class="logged-user" th:text="|Wellcome!|"/>
                     <a class="nav-link" th:href="@{/auth/logout}">Logout</a>
                 </div>
             </li>
-            <li th:unless="${session.user}" class="nav-item" th:classappend="${#request.getServletPath() == '/auth/register'}? 'active'">
+            <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item" th:classappend="${#request.getServletPath() == '/auth/register'}? 'active'">
                 <a class="nav-link" th:href="@{/auth/register}">Register</a>
             </li>
-            <li th:unless="${session.user}" class="nav-item" th:classappend="${#request.getServletPath() == '/auth/login'}? 'active'">
+            <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item" th:classappend="${#request.getServletPath() == '/auth/login'}? 'active'">
                 <a class="nav-link" th:href="@{/auth/login}">Login</a>
             </li>
         </ul>

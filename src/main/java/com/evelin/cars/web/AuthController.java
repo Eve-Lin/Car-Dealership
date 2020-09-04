@@ -1,9 +1,15 @@
 package com.evelin.cars.web;
 
+import com.evelin.cars.model.Role;
 import com.evelin.cars.model.User;
+import com.evelin.cars.repository.RoleRepository;
 import com.evelin.cars.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,27 +18,40 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/auth")
 @Slf4j
 public class AuthController {
 
-    private AuthService authService;
+    private final AuthService authService;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, RoleRepository roleRepository) {
         this.authService = authService;
+        this.roleRepository = roleRepository;
     }
 
 
     @GetMapping("/register")
-    public String getAuthForm(@ModelAttribute("user") User user) {
+    public String getAuthForm(Model registration) {
+        registration.addAttribute("user", new User());
+        System.out.println(roleRepository.findAll());
+        registration.addAttribute("userRoles", roleRepository.findAll().stream().filter( distinctByKey(r -> r.getName()) )
+                .collect( Collectors.toList() ));
+        registration.addAttribute("userRole", new Role());
         return "auth-register";
     }
 
     @PostMapping("/register")
     public String registerNewUser(@Valid @ModelAttribute("user") User user,
+                                  @ModelAttribute("userRole") Role userRole,
                                   final BindingResult result,
                                   RedirectAttributes redirectAttributes) {
 
@@ -65,43 +84,23 @@ public class AuthController {
         return "auth-login";
     }
 
-    @PostMapping("/login")
-    public String loginUser(@RequestParam("username") String username,
-                            @RequestParam("password") String password,
-                            @ModelAttribute("redirectUrl") String redirectUrl,
-                            RedirectAttributes redirectAttributes,
-                            HttpSession session,
-                            BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            String errors = "Invalid username or password.";
-            redirectAttributes.addFlashAttribute("username", username);
-            redirectAttributes.addFlashAttribute("errors", errors);
-            return "redirect:login";
-        } else {
-
-            User loggedUser = authService.login(username, password);
-            if (loggedUser == null) {
-                String errors = "Invalid username or password.";
-                redirectAttributes.addFlashAttribute("username", username);
-                redirectAttributes.addFlashAttribute("errors", errors);
-                return "redirect:login";
-            } else {
-                session.setAttribute("user", loggedUser);
-                if (redirectUrl != null && redirectUrl.trim().length() > 0) {
-                    return "redirect:" + redirectUrl;
-                } else {
-                    return "redirect:/";
-                }
-            }
-        }
-    }
-
-
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/formLoginSuccess")
+    public String getFormLoginInfo(Model model, @AuthenticationPrincipal Authentication authentication) {
+        System.out.println("Database user logged successfully");
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return "home";
+
+    }
+    private static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor)
+    {
+        Map<Object, Boolean> map = new ConcurrentHashMap<>();
+        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
 }
